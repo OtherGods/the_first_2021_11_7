@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset = "utf-8"/>
+		<title>
+			{% block title %}
+				首页
+			{% endblock %}-typeidea 博客系统 
+		</title>
+	</head>
+	<body>
+	<div>顶部分类：
+		{% for cate in nav_categories %}
+			<a href = "/category/{{ cate.id }}/">{{ cate.name }}</a>
+		{% endfor %}
+	</div>
+
+
+	<hr/>
+	
+	{% block main %}
+	{% endblock %}
+	
+	<hr/>
+	<div>底部分类：
+		{% for cate in categories %}
+			<a href = "/category/{{ category.id }}/">{{ cate.name }} </a>
+		{% endfor %}
+	</div>
+	<hr/>
+	<div>侧边展示栏：
+		{% for sidebar in sidebars %}
+			<h4>{{ sidebar.title }}</h4>
+		{% endfor %}
+	</div>
+	</body>
+</html>
+
+
+
+
+			
+		

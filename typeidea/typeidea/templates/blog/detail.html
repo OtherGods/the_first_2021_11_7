@@ -1,0 +1,39 @@
+{% if post %}
+	<h1>{{ post.title }}</h1>
+	<div>	
+		<span>分类：	{% for i in post.category.all %}
+					{{ i.name }}
+				{% endfor %}
+		<span>作者：{{ post.owner.username }}
+	</div>
+	<hr/>
+	<p>
+		{{ post.content }}
+	</p>
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
