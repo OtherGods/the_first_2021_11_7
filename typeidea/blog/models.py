@@ -16,6 +16,7 @@ class Category(models.Model):
 #	owner = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name = '作者',on_delete = models.CASCADE)
 	owner = models.ForeignKey(User,verbose_name = '作者',on_delete = models.CASCADE)
 	created_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
+
 	class Meta:
 		#这里是是设置模型对象的直观名称，用于在各种打印、页面展示等场景。
 		verbose_name = '分类'
@@ -37,7 +38,7 @@ class Category(models.Model):
 			'nav_categories':nav_categories,
 			'categories':normal_categories,
 		}
-	
+
 	
 class Tag(models.Model):
 	STATUS_NORMAL = 1
@@ -57,6 +58,7 @@ class Tag(models.Model):
 	
 	class Meta:
 		verbose_name = verbose_name_plural = '标签'
+
 	def __str__(self):
 		return self.name
 
@@ -82,6 +84,7 @@ class Post(models.Model):
 	tag = models.ManyToManyField(Tag,verbose_name = '标签')
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
 #	owner = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name = '作者',on_delete = models.CASCADE)
 	owner = models.ForeignKey(User,verbose_name = '作者',on_delete = models.CASCADE)
 	
@@ -91,12 +94,12 @@ class Post(models.Model):
 	pv = models.PositiveIntegerField(default = 1)
 	uv = models.PositiveIntegerField(default = 1)
 	
-	
 
 	class Meta:
 		verbose_name = verbose_name_plural = '文章'
 		ordering = ['-id'] 	#根据id进行降序排列
 	
+
 	def __str__(self):
 		return self.title
 
@@ -134,7 +137,6 @@ class Post(models.Model):
 	@classmethod
 	def hot_posts(cls):
 		return cls.objects.filter(status = cls.STATUS_NORMAL).order_by('-pv')
-			
 
 
 

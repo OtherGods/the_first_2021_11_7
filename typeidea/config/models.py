@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+
 from django.template.loader import render_to_string
+
 
 # Create your models here.
 
@@ -44,6 +46,7 @@ class	SideBar(models.Model):
 		(DISPLAY_LATEST,'最新文章'),
 		(DISPLAY_HOT,'最热文章'),
 		(DISPLAY_COMMENT,'最近评论'),
+
 	)
 	title = models.CharField(max_length = 50,verbose_name = '标题')
 	display_type = models.PositiveIntegerField(default = 1,choices = SIDE_TYPE,verbose_name = '展示类型')
@@ -87,7 +90,6 @@ class	SideBar(models.Model):
 			}
 			result = render_to_string('config/blocks/sidebar_comment.html',context)
 		return result
-		
 	
 	
 	

@@ -58,8 +58,8 @@ def post_detail(request,post_id):
 
 
 
-#class CommonViewMixin(ContextMixin):
-class CommonViewMixin:
+class CommonViewMixin(ContextMixin):
+#class CommonViewMixin:
 	"""
 		获取通用数据，例如导航栏、侧边栏、底部导航。
 	"""
@@ -67,6 +67,8 @@ class CommonViewMixin:
 		"""
 			A default context mixin that passes the keyword arguments received by
 			get_context_data() as the template context.
+			在书中这个类没有继承自ContextMixin，但是如果没有继承自这个类的话下面的super是怎么来的？
+
 					
 		"""
 		context = super().get_context_data(**kwargs)
@@ -81,8 +83,7 @@ class IndexView(CommonViewMixin,ListView):
 	"""
 		这是首页内容的类，继承了上面获取通用数据的类。
 	"""
-	print("进入INdexiew。。。。。。。。。。。。")
-	queryset = Post.latest_posts()
+	queryset = Post.latest_posts()  #这里得到的是所有的文章
 	paginate_by = 5
 	context_object_name = 'post_list'
 	template_name = 'blog/list.html'
@@ -146,7 +147,5 @@ class PostDetailView(CommonViewMixin,DetailView):
 
 
 
-
-	
 
 

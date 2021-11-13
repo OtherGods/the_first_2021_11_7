@@ -163,6 +163,3 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 
 
-
-
-

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
 	'typeidea',	#放这个APP是因为templates文件夹在这个目录下，因为在本模块中APP_DIRS是指为True，
 			#所以模板引擎会在已注册的应用中寻找模板
 	'blog',
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.messages',
-	'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +124,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -141,8 +142,6 @@ LOGGING = {
         },
     }
 }
-
-
 
 
 

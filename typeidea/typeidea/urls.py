@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+
 from django.conf.urls import url
 from blog import views
 from typeidea.custom_site import custom_site
@@ -34,4 +35,5 @@ urlpatterns = [
 	url(r'^tag/(?P<tag_id>\d+)/$',TagView.as_view(),name = 'tag-list'),
 	url(r'^post/(?P<post_id>\d+).html/$',PostDetailView.as_view(),name = 'post-detail'),
 	url(r'^links/$',links,name = 'links'),
+
 ]
