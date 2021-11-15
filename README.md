@@ -25,4 +25,5 @@ bug5：在blog/admin.py模块下的PostAdmin类中的fieldsets中最后一个元
 	应django企业开发实战书的9.6
 
 问题：
+	在9.6中的rss和sitemap完全不知道他在做什么？？？
 

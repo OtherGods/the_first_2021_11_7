@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 import mistune
+from django.utils.functional import cached_property
 
 class Category(models.Model):
 	STATUS_NORMAL = 1
@@ -147,10 +148,15 @@ class Post(models.Model):
 	def save(self,*args,**kwargs):
 		self.content_html = mistune.markdown(self.content)
 		super().save(*args,**kwargs)
-
-
-
-
+		
+	@cached_property
+	def tags(self):
+		"""
+			这个方法是在书的9.6.2中添加的，在django的官方文档中说这个cached_property是用来缓存用的，
+			将被这个装饰器装饰的方法的结果缓存起来。但是我还是第一次使用不太熟悉。
+		"""
+		return ','.join(self.tag.values_list('name',flat = True))
+	
 
 
 

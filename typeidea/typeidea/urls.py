@@ -25,6 +25,10 @@ from config.views import links
 from blog.views import IndexView,CategoryView,TagView,PostDetailView,SearchView,AuthorView
 from config.views import LinkListView
 from comment.views import CommentView
+from blog.rss import LatestPostFeed
+from blog.sitemap import PostSitemap
+from django.contrib.sitemaps import views as sitemap_views
+
 
 urlpatterns = [
 	url('super_admin/', admin.site.urls,name = 'super-admin'),
@@ -39,6 +43,9 @@ urlpatterns = [
 	url(r'^search/$',SearchView.as_view(),name = 'search'),
 	url(r'^author/(?P<owner_id>)/$',AuthorView.as_view(),name = 'author'),
 	url(r'^comment/$',CommentView.as_view(),name = 'comment'),
+	#配置RSS 和 sitemap
+	url(r'rss|feed/',LatestPostFeed(),name = 'rss'),
+	url(r'^sitemap\.xml$',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}}),
 	
 ]
 
