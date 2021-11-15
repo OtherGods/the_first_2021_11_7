@@ -130,7 +130,9 @@ class PostAdmin(BaseOwnerAdmin):
 			),	
 		}),
 		('额外信息',{
-			'classes':('collapse',),
+			#'classes':('collapse',),	#不知道这里发生了什么事情，在页面中点击展开之后连‘展开’这两
+								#个子都没有了，把这个classes家在基础配置中也是同样的结果，不知所以
+	
 			'fields':('tag',),
 		})
 

@@ -1,6 +1,7 @@
 #from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+import mistune
 
 class Category(models.Model):
 	STATUS_NORMAL = 1
@@ -75,7 +76,11 @@ class Post(models.Model):
 	)
 	title = models.CharField(max_length = 255,verbose_name = '标题')
 	desc = models.CharField(max_length = 1024,blank = True,verbose_name = '摘要')
+	
 	content = models.TextField(verbose_name = '正文',help_text = '正文必须为MarkDown的格式')
+	#用来存储makedown处理后的正文内容
+	content_html = models.TextField(verbose_name = '正文html代码',blank = True,editable = False)	
+	
 	status = models.PositiveIntegerField(default = STATUS_NORMAL,choices = STATUS_ITEMS,verbose_name = '状态')
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -90,7 +95,7 @@ class Post(models.Model):
 	
 	created_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
 	
-	
+	#这两个字段用来处理文章的访问量。【至于为什么用两个字段来处理我就不太清楚了】
 	pv = models.PositiveIntegerField(default = 1)
 	uv = models.PositiveIntegerField(default = 1)
 	
@@ -139,10 +144,9 @@ class Post(models.Model):
 		return cls.objects.filter(status = cls.STATUS_NORMAL).order_by('-pv')
 
 
-
-
-
-
+	def save(self,*args,**kwargs):
+		self.content_html = mistune.markdown(self.content)
+		super().save(*args,**kwargs)
 
 
 
