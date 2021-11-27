@@ -66,7 +66,7 @@ class	SideBar(models.Model):
 
 	@property
 	def content_html(self):
-		"""直接渲染模板"""
+		"""根据侧边栏的类型直接渲染模板，侧边栏和别的类没有联系"""
 		from blog.models import Post	#在书的这里写着避免循环引用，但是我认为这里好像没有什么作用
 		from comment.models import Comment
 		

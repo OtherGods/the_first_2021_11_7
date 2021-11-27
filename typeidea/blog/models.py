@@ -2,7 +2,10 @@
 from django.contrib.auth.models import User
 from django.db import models
 import mistune
+#导入的这个cached_property的作用是帮我们把返回的数据绑定到实例上，不用每次访问都回去执行tags函数中的代码
 from django.utils.functional import cached_property
+from django.utils import timezone
+import datetime
 
 class Category(models.Model):
 	STATUS_NORMAL = 1
@@ -96,8 +99,9 @@ class Post(models.Model):
 	
 	created_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
 	
-	#这两个字段用来处理文章的访问量。【至于为什么用两个字段来处理我就不太清楚了】
+	#这个自段用来统计某篇文章被访问了多少次【这个字段应该防止同一个用户在极短时间内多次刷同一篇文章的页面】
 	pv = models.PositiveIntegerField(default = 1)
+	#同一个用户一天内多次访问同一篇文章，那么这个uv字段只增加一次。
 	uv = models.PositiveIntegerField(default = 1)
 	
 
@@ -156,6 +160,19 @@ class Post(models.Model):
 			将被这个装饰器装饰的方法的结果缓存起来。但是我还是第一次使用不太熟悉。
 		"""
 		return ','.join(self.tag.values_list('name',flat = True))
+
+
+#将会被用来测试的类
+class Question(models.Model):
+
+	question_text = models.CharField(max_length = 200)
+	pub_date = models.DateTimeField('data published')
+
+	def __str__(self):
+		return self.question_text
+
+	def was_published_recently(self):
+		return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 	
 
 

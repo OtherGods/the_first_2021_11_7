@@ -28,6 +28,7 @@ from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 from django.contrib.sitemaps import views as sitemap_views
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -41,11 +42,12 @@ urlpatterns = [
 	url(r'^post/(?P<post_id>\d+).html/$',PostDetailView.as_view(),name = 'post-detail'),
 	url(r'^links/$',LinkListView.as_view(),name = 'links'),
 	url(r'^search/$',SearchView.as_view(),name = 'search'),
-	url(r'^author/(?P<owner_id>)/$',AuthorView.as_view(),name = 'author'),
+	url(r'^author/(?P<owner_id>\d+)/$',AuthorView.as_view(),name = 'author'),
 	url(r'^comment/$',CommentView.as_view(),name = 'comment'),
 	#配置RSS 和 sitemap
 	url(r'rss|feed/',LatestPostFeed(),name = 'rss'),
 	url(r'^sitemap\.xml$',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}}),
+	url(r'^test10/$',TemplateView.as_view(template_name = 'test10.html')),
 	
 ]
 

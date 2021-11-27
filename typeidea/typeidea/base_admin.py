@@ -15,6 +15,9 @@ class BaseOwnerAdmin(admin.ModelAdmin):
 
 
 	def save_model(self,request,obj,form,change):
+		'''
+		保存用户在编辑页面中添加的数据的同时保存被添加的post是那个作者
+		'''
 		obj.owner = request.user
 		return super(BaseOwnerAdmin,self).save_model(request,obj,form,change)
 

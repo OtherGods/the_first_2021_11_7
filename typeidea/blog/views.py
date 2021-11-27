@@ -93,6 +93,10 @@ class IndexView(CommonViewMixin,ListView):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #这里是分类列表页对应的类和标签列表页对应的类
 class CategoryView(IndexView):
+	'''
+	这个类覆盖了父类IndexView中的数据源queryset【get_queryset方法】以及_context_data方法。
+	在Indexew类中展示的是所有的文章列表，但是在这个类中是展示用户在url中输入的分类对应的文章列表
+	'''
 	def get_context_data(self,**kwargs):
 		context = super().get_context_data(**kwargs)
 		category_id = self.kwargs.get('category_id')
@@ -107,10 +111,14 @@ class CategoryView(IndexView):
 			重写queryset，根据分类过滤
 		"""
 		queryset = super().get_queryset()
-		category_id = self.kwargs.get('category_id')	#这里的kwargs不知道哪里来的
+		category_id = self.kwargs.get('category_id')
 		return queryset.filter(category = category_id)
 	
 class TagView(IndexView):
+	'''
+	这个类覆盖了父类IndexView中的数据源queryset【get_queryset方法】以及_context_data方法。
+	在Indexew类中展示的是所有的文章列表，但是在这个类中是展示用户在url中输入的标签对应的文章列表
+	'''
 	def get_context_data(self,**kwargs):
 		context = super().get_context_data(**kwargs)
 		tag_id = self.kwargs.get('tag_id')
@@ -130,6 +138,12 @@ class TagView(IndexView):
 #这里是搜索功能对应的类
 
 class SearchView(IndexView):
+	'''
+	注意：这里是继承自IndexView类，这个IndexView类会展示所有的文章，但是由于这里是搜索文章，所以就需要修改数据源
+	，这里的这个SearchView类的用法和上面按照标签和分类展示文章的类的租用一样，都是通过修改数据源，并且修改上下文
+	来操作展示给用户的数据有哪些。	  
+	'''
+
 	def get_context_data(self,**kwargs):
 		context = super().get_context_data()
 		context.update({
@@ -166,11 +180,24 @@ class PostDetailView(CommonViewMixin,DetailView):
 	queryset = Post.latest_posts()
 	template_name = 'blog/detail.html'
 	context_objects_name = 'post'
-	pk_url_kwarg = 'post_id'			#用处？？？？？？，官方文档中说的太笼统
+	pk_url_kwarg = 'post_id'			#这个post_id对应与urls.py中的url(r'^post/(?P<post_id>\d+).html/$',..)
+							#post_id;
+							#这个属性的作用是设置在DetailView源码的父类的get_object方法中
+							#用到的：pk = self.kwargs.get(self.pk_url_kwarg)，
+							#【这里的self.kwargs是在View类中的setup方法中设置的，
+							#这里的self.kwargs对应的值是用户在浏览器中输入的url中的关键字参数
+							#也就是对应在urls.py中的urlpatterns中的url第一个参数为
+							#r'^post/(?P<post_id>\d+).html/$'  中的关键字参数post_id和
+							#用户在浏览器中输入的参数匹配的字典】，pk得到的值就是kwargs字典中
+							#键post_id对应值.
 
 
 
 	'''
+	#由于添加评论的时候直接象下面这样写耦合性太高，所以要把获取评论的内容以及提交评论的表但抽象出来作为一个插件随插随用
+	#所以注释掉这里，重新写了一个自定义的标签，在这个自定义的标签中获取评论内容，和提交评论的表单。自定义标签在
+	#comment包下的templatetags中。
+
 	#这个方法的作用是用来将某篇文章对应的评论添加到上下文context中，但是之后优化了代码，将获取评论的方式
 	#转换成一个标签，随用随插，这样就可以即在文章详情的时候展示评论，也可以在展示友情链接的时候展示评论
 	#【虽然我还不知道这个友情链接是干什么用的】
