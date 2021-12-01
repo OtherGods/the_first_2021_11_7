@@ -9,12 +9,12 @@ class UserIDMiddleware:
 	def __call__(self,request):
 		uid = self.generate_uid(request)
 		request.uid = uid
-		print('在请求的时候已经给请求生成了一个uid。。。。。。。。。。。。。：',uid,'***********')
+		#print('在请求的时候已经给请求生成了一个uid。。。。。。。。。。。。。：',uid,'***********')
 
 		response = self.get_response(request)
 		
 		response.set_cookie(USER_KEY,uid,max_age = TEN_YEARS,httponly = True)
-		print('在返回响应的时候给响应设置了cookies，键是字符串’uid值’对是uid对应的值')
+		#print('在返回响应的时候给响应设置了cookies，键是字符串’uid值’对是uid对应的值')
 
 		return response
 	def generate_uid(self,request):
@@ -23,9 +23,25 @@ class UserIDMiddleware:
 				所以，在这个try内只要用户发送来的请求中包含cookie，就不会报错，只是把request中的
 				cookie读到内存中并且赋值给uid。
 			"""    
-			print('打印缓存中的cookies******************',request.COOKIES)
+			#print('打印缓存中的cookies******************',request.COOKIES)
 			uid = request.COOKIES[USER_KEY]
 		except KeyError:
 			uid = uuid.uuid4().hex
 		return uid
+class check_request:
+	def __init__(self,get_response):
+		self.get_response = get_response
+	def __call__(self,request):
+		print('在中间件中打印用户在浏览器中发送来的请求中包含的内容，主要是查看reuqest.user------------------',request.user,type(request.user))
+		
+		response = self.get_response(request)
+		
+		print('在中间件check_request中的__call__方法中的get_response方法之后return之前------------------')
+
+		return response
+
+
+
+
+
 		

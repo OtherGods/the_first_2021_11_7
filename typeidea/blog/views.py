@@ -233,6 +233,7 @@ class PostDetailView(CommonViewMixin,DetailView):
 		return response
 	'''		
 	def get(self,request,*args,**kwargs):
+		print('打印request中的session属性的类型：',request.session,type(request.session))
 		response = super().get(request,*args,**kwargs)	
 		self.handle_visited()
 		return response

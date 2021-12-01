@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-^esvl!u3--qi(frt1j47zp(sn+6kz*07+er$%b@4*z9e#doch)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.43.126',]
+ALLOWED_HOSTS = ['192.168.43.126']
 
 
 # Application definition
@@ -47,6 +47,17 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	#xadmin相关
+	'xadmin',
+	'crispy_forms',
+	'django.conf',
+	'reversion',
+	'dal',
+	'dal_select2',
+	#django_ckeditor相关
+	'ckeditor',
+	'ckeditor_uploader',
+	
 ]
 
 MIDDLEWARE = [
@@ -58,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'blog.middleware.user_id.check_request',
 
 ]
 
@@ -131,13 +143,36 @@ STATIC_ROOT = '/tmp/static'
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR,'themes',THEME,'static'),
 ]
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+CKEDITOR_UPLOAD_PATH = 'article_images'
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+#这是配置xadmin站点的系名称以及footer需要展示的内容
+XADMIM_TITLE = 'Typeidea管理后台'	#这里不知道配置到那里了
+XADMIN_FOOTER_TITLE = 'power by lxd'
+
+
+#这里饰配置ckeditor
+CKEDITRO_CONFIGS = {
+	'default':{
+		'toolbar':'full',
+		'height':300,
+		'width':800,
+		'tabSpaces':4,
+		'extraPlugins':'codesnippet',		#配置代码插件
+	},
+}
+
+
+
 
 '''
 LOGGING = {
@@ -157,6 +192,5 @@ LOGGING = {
         },
     }
 }
-
 
 '''

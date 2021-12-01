@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-
+from django.urls import re_path,path
 from django.conf.urls import url
 from blog import views
 from typeidea.custom_site import custom_site
@@ -29,11 +29,21 @@ from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 from django.contrib.sitemaps import views as sitemap_views
 from django.views.generic import TemplateView
+#xadmin
+import xadmin
+#django-autocomplete-light
+from .autocomplete import CategoryAutocomplete,TagAutocomplete
+
+#上传文件
+from django.conf import settings
+from django.conf.urls import url,include
+from django.conf.urls.static import static 
 
 
 urlpatterns = [
-	url('super_admin/', admin.site.urls,name = 'super-admin'),
-	url('admin/', custom_site.urls,name = 'admin'),
+	#url('super_admin/', admin.site.urls,name = 'super-admin'),
+	#url('admin/', custom_site.urls,name = 'admin'),
+	url('xadmin/', xadmin.site.urls,name = 'xadmin'),
 	url('test1/', views.test1),
 
 	url(r'^$', IndexView.as_view(),name = 'index'),
@@ -49,7 +59,14 @@ urlpatterns = [
 	url(r'^sitemap\.xml$',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}}),
 	url(r'^test10/$',TemplateView.as_view(template_name = 'test10.html')),
 	
-]
+	#配置django-autocomplete-light
+	#re_path(r'^category-autocomplete/',CategoryAutocomplete.as_view(),name = 'category-autocomplete'),
+	#re_path(r'^tag-autocomplete/',TagAutocomplete.as_view(),name = 'tag-autocomplete'),
+	
+	path('category-autocomplete/',CategoryAutocomplete.as_view(),name = 'category-autocomplete'),
+	path('tag-autocomplete/',TagAutocomplete.as_view(),name = 'tag-autocomplete'),
+	url(r'^ckeditor/',include('ckeditor_uploader.urls')),
+] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 
 
 

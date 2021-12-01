@@ -81,6 +81,9 @@ class Post(models.Model):
 	title = models.CharField(max_length = 255,verbose_name = '标题')
 	desc = models.CharField(max_length = 1024,blank = True,verbose_name = '摘要')
 	
+	#这个字段在数据库中保存的是增加文章页面中content_ck或cotent_md中的内容，如果是页面中显示的是content_ck那么这个
+	#content中保存的是html形式的正文内容【也就是页面中显示的内容是被处理过的原始数据<可能是前端中处理的>】，如果页面
+	#中显示的是content_md，那么这个content中保存的是原始的数据【没有被处理的】
 	content = models.TextField(verbose_name = '正文',help_text = '正文必须为MarkDown的格式')
 	#用来存储makedown处理后的正文内容
 	content_html = models.TextField(verbose_name = '正文html代码',blank = True,editable = False)	
@@ -104,6 +107,8 @@ class Post(models.Model):
 	#同一个用户一天内多次访问同一篇文章，那么这个uv字段只增加一次。
 	uv = models.PositiveIntegerField(default = 1)
 	
+	#用来判断在xadmin中新增文章的时候使用的是markdown还是django-ckeditor
+	is_md = models.BooleanField(default = True,verbose_name = 'markdown语法')
 
 	class Meta:
 		verbose_name = verbose_name_plural = '文章'
@@ -150,7 +155,14 @@ class Post(models.Model):
 
 
 	def save(self,*args,**kwargs):
-		self.content_html = mistune.markdown(self.content)
+		'''
+		如果用户在浏览器中是通过markdown形式增加Post的话那么context_html中保存的数据就是执行了mistune.markdown之后的
+		形式的数据，如果用户在浏览器中是通过ckeditor形式编写的Post那么context_html中保存的数据就和context中的数据一致。
+		'''
+		if self.is_md:
+			self.content_html = mistune.markdown(self.content)
+		else:
+			self.content_html = self.content
 		super().save(*args,**kwargs)
 		
 	@cached_property
